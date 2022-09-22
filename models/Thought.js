@@ -22,12 +22,12 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
         },
-        reactions: [reactionSchema],
+//        reactions: [reactionSchema],
     },
 
 )
 
-userSchema
+thoughtSchema
   .virtual('reactionCount')
   .get(function () {
     return this.reactions.length ;

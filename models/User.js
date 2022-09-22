@@ -10,6 +10,9 @@ const userSchema = new Schema(
             required: true,
             trim:true
         },
+        // Added first and last names as it seems silly not to
+        first_name:String,
+        last_name:String,
         //https://stackoverflow.com/questions/58898066/mongoose-unique-email-address-validation
         email:{
             type: String,
