@@ -36,5 +36,7 @@ const reactionSchema = new Schema(
 
 )
 
-//This is a schema type so no model export part
-module.exports = Reaction;
+
+// const Reaction = model('reaction', reactionSchema);
+
+module.exports = reactionSchema;

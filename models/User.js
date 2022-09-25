@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+const Reaction = require('./Reaction');
+const Thought = require('./Thought');
 
 //userSchema
 
@@ -25,10 +27,11 @@ const userSchema = new Schema(
             lowercase: true,
             dropDups: true
           },
-        thoughts: [{
+          thoughts: [{
             type: Schema.Types.ObjectId,
-            ref: 'Thought',
+            ref: Thought,
         },],
+        // thoughts: [Thought],
         friends: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
