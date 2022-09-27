@@ -18,12 +18,12 @@ const reactionSchema = new Schema(
       required: true
     },
     createdAt: {
-      type: String,
+      type: Date,
       required: true,
       default: Date.now,
-      get: (Date) => {
+      get: (date) => {
         //  return date.toISOString();
-         if (Date) return Date.toISOString();
+         if (date) return date.toISOString();
       }
     },
 

@@ -11,7 +11,7 @@ const thoughtSchema = new Schema(
       maxLength: 280
     },
     createdAt: {
-      type: String,
+      type: Date,
       required: true,
       default: Date.now,
       get: (date) => {
@@ -29,7 +29,7 @@ const thoughtSchema = new Schema(
       required: true
     },*/
 
-    // reaction: [reactionSchema],
+    //  reaction: [reactionSchema],
 
   },
   {

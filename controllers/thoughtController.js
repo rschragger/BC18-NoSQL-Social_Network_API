@@ -1,5 +1,5 @@
 const { User, Thought, Reaction } = require('../models');
-
+const reactionSchema = require('../models/Reaction')
 // const reactionCounter = async (thoughtId) =>
 //   Thought.aggregate([
 //     // only include the given student by using $match
@@ -21,7 +21,7 @@ module.exports = {
   getThoughts(req, res) {
     Thought.find()
       // .then((thought) => res.json(thought))
-      .then( (thought) => {  res.json(thought)})
+      .then((thought) => { res.json(thought) })
       .catch((err) => res.status(500).json(err));
   },
 
@@ -34,10 +34,10 @@ module.exports = {
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
           : res.json(thought)
-          // : res.json({
-          //   thought,
-          //   reactionCount: await reactionCounter(req.params.thoughtId)
-          // })
+        // : res.json({
+        //   thought,
+        //   reactionCount: await reactionCounter(req.params.thoughtId)
+        // })
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -101,9 +101,12 @@ module.exports = {
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
+      // { $pull: { reactions: 
+      //   { 'reactions.reactionId': req.body.reactionId 
+      //   } }}
       { $pull: { reactions: { reactionId: req.body.reactionId } } }
     )
-      .then(() => res.status(200).json({ message: `Reaction removed!` }))
+      .then((thought) => res.status(200).json(thought))//{ message: `Reaction removed!` }))
       .catch((err) => res.status(500).json(err));
   }
 
