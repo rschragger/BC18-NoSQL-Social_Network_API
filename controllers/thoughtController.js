@@ -2,9 +2,18 @@ const { User, Thought, Reaction } = require('../models');
 
 module.exports = {
   // Get all thoughts
-  getThought(req, res) {
+  getThoughts(req, res) {
     Thought.find()
-      .then((thought) => res.json(thought))
+      // .then((thought) => res.json(thought))
+      .then((thought) => {
+        console.log(thought)
+        res.json(thought)
+      })
+      // .then((thoughtData) => {
+      //   const thought = thoughtData.map((obj) => obj.get({ plain: true }))
+      //   console.log(thought)
+      //   res.json(thought)
+      // })
       .catch((err) => res.status(500).json(err));
   },
 
@@ -45,11 +54,11 @@ module.exports = {
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      {$set:req.body},
+      { $set: req.body },
       { runValidators: true, new: true })
-      .then((thought)=> res.json(thought))
+      .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
-   },
+  },
 
   // Delete a thought 
   deleteThought(req, res) {
@@ -77,15 +86,15 @@ module.exports = {
       //     ? res.status(404).json({ message: `No thought with id ${req.params.thoughtId}!` })
       //     : res.json(thought)
       // )
-      .then(()=>res.status(200).json(req.body))
+      .then(() => res.status(200).json(req.body))
       .catch((err) => res.status(500).json(err));
   },
 
   // '/:thoughtId/reactions'
-  removeReaction(req,res){
+  removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions:{reactionId: req.body.reactionId }} }
+      { $pull: { reactions: { reactionId: req.body.reactionId } } }
     )
       .then(() => res.status(200).json({ message: `Reaction removed!` }))
       .catch((err) => res.status(500).json(err));
