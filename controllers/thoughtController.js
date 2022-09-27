@@ -1,19 +1,19 @@
 const { User, Thought, Reaction } = require('../models');
 
-const reactionCounter = async (thoughtId) =>
-  Thought.aggregate([
-    // only include the given student by using $match
-    { $match: { _id: ObjectId(thoughtId) } },
-    {
-      $unwind: '$reactions',
-    },
-    {
-      $group: {
-        _id: ObjectId(thoughtId),
-        reactionCount: { $count: '$reactions.reactionBody' },
-      },
-    },
-  ]);
+// const reactionCounter = async (thoughtId) =>
+//   Thought.aggregate([
+//     // only include the given student by using $match
+//     { $match: { _id: ObjectId(thoughtId) } },
+//     {
+//       $unwind: '$reactions',
+//     },
+//     {
+//       $group: {
+//         _id: ObjectId(thoughtId),
+//         reactionCount: { $count: '$reactions.reactionBody' },
+//       },
+//     },
+//   ]);
 
 
 module.exports = {
@@ -21,14 +21,7 @@ module.exports = {
   getThoughts(req, res) {
     Thought.find()
       // .then((thought) => res.json(thought))
-      .then(async (thought) => {
-        res.json(thought
-        // console.log(thought)
-        // res.json({
-        //   thought,
-        //   reactionCount: await reactionCount(req.params.thoughtId)
-        // })
-      )})
+      .then( (thought) => {  res.json(thought)})
       .catch((err) => res.status(500).json(err));
   },
 

@@ -41,11 +41,10 @@ const thoughtSchema = new Schema(
 );
 
 
-
 thoughtSchema
   .virtual('reactionCount')
   .get(function () {
-    if (this._doc.reactions.length <1) { return 0 }
+    if (!this._doc.reactions) { return 0 }
     else {
       return this._doc.reactions.length;
     }
