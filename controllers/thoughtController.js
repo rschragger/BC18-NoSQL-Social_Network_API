@@ -1,19 +1,34 @@
 const { User, Thought, Reaction } = require('../models');
 
+const reactionCounter = async (thoughtId) =>
+  Thought.aggregate([
+    // only include the given student by using $match
+    { $match: { _id: ObjectId(thoughtId) } },
+    {
+      $unwind: '$reactions',
+    },
+    {
+      $group: {
+        _id: ObjectId(thoughtId),
+        reactionCount: { $count: '$reactions.reactionBody' },
+      },
+    },
+  ]);
+
+
 module.exports = {
   // Get all thoughts
   getThoughts(req, res) {
     Thought.find()
       // .then((thought) => res.json(thought))
-      .then((thought) => {
-        console.log(thought)
-        res.json(thought)
-      })
-      // .then((thoughtData) => {
-      //   const thought = thoughtData.map((obj) => obj.get({ plain: true }))
-      //   console.log(thought)
-      //   res.json(thought)
-      // })
+      .then(async (thought) => {
+        res.json(thought
+        // console.log(thought)
+        // res.json({
+        //   thought,
+        //   reactionCount: await reactionCount(req.params.thoughtId)
+        // })
+      )})
       .catch((err) => res.status(500).json(err));
   },
 
@@ -22,10 +37,14 @@ module.exports = {
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select('-__v')
-      .then((thought) =>
+      .then(async (thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
           : res.json(thought)
+          // : res.json({
+          //   thought,
+          //   reactionCount: await reactionCounter(req.params.thoughtId)
+          // })
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -81,11 +100,6 @@ module.exports = {
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
-      // .then((thought) =>
-      //   !thought
-      //     ? res.status(404).json({ message: `No thought with id ${req.params.thoughtId}!` })
-      //     : res.json(thought)
-      // )
       .then(() => res.status(200).json(req.body))
       .catch((err) => res.status(500).json(err));
   },

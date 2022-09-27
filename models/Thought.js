@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
- const reactionSchema = require('./Reaction')
+const reactionSchema = require('./Reaction')
 // const User = require('./User')
 
 const thoughtSchema = new Schema(
@@ -29,7 +29,7 @@ const thoughtSchema = new Schema(
       required: true
     },*/
 
-    //  reactions: [reactionSchema],
+    // reaction: [reactionSchema],
 
   },
   {
@@ -41,14 +41,20 @@ const thoughtSchema = new Schema(
 );
 
 
+
 thoughtSchema
   .virtual('reactionCount')
   .get(function () {
-    return this.reactionSchema.length;
+    if (this._doc.reactions.length <1) { return 0 }
+    else {
+      return this._doc.reactions.length;
+    }
+
   })
   .set(function (len) {
     this.set(len);
   });
+  
 
 // Export Thought model
 const Thought = model('thought', thoughtSchema);
